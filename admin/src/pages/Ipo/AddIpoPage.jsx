@@ -39,7 +39,7 @@ const AddUpcomingIpoPage = () => {
 
             await registerIpo(formattedFormData);
             alert("IPO registered successfully!");
-            navigate("/ipos"); // Redirect to the Upcoming IPOs page
+            navigate("/ipos"); 
         } catch (err) {
             setError("Failed to register IPO. Please try again.");
             console.error(err);
@@ -48,7 +48,6 @@ const AddUpcomingIpoPage = () => {
         }
     };
 
-    // Ensure only admin can access this page
     if (!user || user.role !== "ADMIN") {
         return (
             <div className="min-h-screen flex items-center justify-center text-red-500">

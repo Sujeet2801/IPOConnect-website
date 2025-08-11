@@ -20,18 +20,25 @@ const EditIpoPage = () => {
     status: "UPCOMING",
   });
 
+  // Helper to format date to yyyy-MM-dd
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
     if (ipo) {
       setFormData({
         companyName: ipo.companyName || "",
-        openDate: ipo.openDate ? new Date(ipo.openDate).toISOString() : "",
-        closeDate: ipo.closeDate ? new Date(ipo.closeDate).toISOString() : "",
+        openDate: ipo.openDate ? formatDate(ipo.openDate) : "",
+        closeDate: ipo.closeDate ? formatDate(ipo.closeDate) : "",
         priceBand: ipo.priceBand || "",
         issueSize: ipo.issueSize || "",
         issueType: ipo.issueType || "",
-        listingDate: ipo.listingDate
-          ? new Date(ipo.listingDate).toISOString()
-          : "",
+        listingDate: ipo.listingDate ? formatDate(ipo.listingDate) : "",
         status: ipo.status || "UPCOMING",
       });
     }
@@ -52,11 +59,20 @@ const EditIpoPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Convert date fields to ISO format if they are not empty
+    const formattedData = {
+      ...formData,
+      openDate: formData.openDate ? new Date(formData.openDate).toISOString() : null,
+      closeDate: formData.closeDate ? new Date(formData.closeDate).toISOString() : null,
+      listingDate: formData.listingDate ? new Date(formData.listingDate).toISOString() : null,
+    };
+
     try {
-      await updateIpo(ipo.companyName.split(" ").join("-"), formData);
-      console.log(formData);
+      await updateIpo(ipo.companyName.split(" ").join("-"), formattedData);
+      console.log(formattedData);
       alert("IPO updated successfully!");
-      navigate("/ipos/upcoming");
+      navigate("/ipos");
     } catch (err) {
       console.error("Error updating IPO:", err);
       alert("Failed to update IPO.");
@@ -105,7 +121,7 @@ const EditIpoPage = () => {
           >
             <option value="UPCOMING">UPCOMING</option>
             <option value="ONGOING">ONGOING</option>
-            <option value="CLOSED">CLOSED</option>
+            <option value="LISTED">LISTED</option>
           </select>
         </div>
 

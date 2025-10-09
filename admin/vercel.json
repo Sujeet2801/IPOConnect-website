@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/v1/users/:match*",
-      "destination": "https://ipoconnect-website.onrender.com/api/v1/users/:match*"
+      "destination": "https://ipoconnect.sujeettech.com/api/v1/users/:match*"
     },
     {
       "source": "/(.*)",
